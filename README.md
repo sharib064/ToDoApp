@@ -1,2 +1,9 @@
 Home:
 ![Screenshot_1719995802](https://github.com/sharib064/ToDoApp/assets/106105515/8805dbb1-ef0a-42b2-bc30-bf1ae6f9f0b0)
+![Screenshot_1719996361](https://github.com/sharib064/ToDoApp/assets/106105515/3416f8e8-87c6-437f-b34d-7c81eb7f4355)
+![Screenshot_1719995851](https://github.com/sharib064/ToDoApp/assets/106105515/df4d8c0d-bda2-4e12-b5db-92ad123bf16e)
+![Screenshot_1719995846](https://github.com/sharib064/ToDoApp/assets/106105515/57da8cd1-d498-41b7-ab68-288475fe8aae)
+![Screenshot_1719995842](https://github.com/sharib064/ToDoApp/assets/106105515/a0e91e4e-a93e-4ea1-b0ad-1ccdf0dc14ef)
+![Screenshot_1719995835](https://github.com/sharib064/ToDoApp/assets/106105515/7c3d1c6b-3438-4c10-9051-dbc4da2895da)
+![Screenshot_1719995812](https://github.com/sharib064/ToDoApp/assets/106105515/5cc95467-92c9-487a-aefd-81324be209ee)
+![Screenshot_1719996365](https://github.com/sharib064/ToDoApp/assets/106105515/8a9f8d97-be1e-49e0-b9e4-3bd1ebb8f9ac)
