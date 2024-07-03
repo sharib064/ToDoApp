@@ -1,4 +1,3 @@
-Home:
 ![Screenshot_1719995802](https://github.com/sharib064/ToDoApp/assets/106105515/8805dbb1-ef0a-42b2-bc30-bf1ae6f9f0b0)
 ![Screenshot_1719996361](https://github.com/sharib064/ToDoApp/assets/106105515/3416f8e8-87c6-437f-b34d-7c81eb7f4355)
 ![Screenshot_1719995851](https://github.com/sharib064/ToDoApp/assets/106105515/df4d8c0d-bda2-4e12-b5db-92ad123bf16e)
