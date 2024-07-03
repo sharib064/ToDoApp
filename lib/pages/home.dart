@@ -1,6 +1,8 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:todo_app/pages/database.dart';
 import 'package:todo_app/pages/dialog_box.dart';
 import 'package:todo_app/pages/itemtile.dart';
 
@@ -12,6 +14,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final myBox = Hive.box("myBox");
+  ToDoDatabase db = ToDoDatabase();
   final myController = TextEditingController();
   int selectedIndex = 0;
   void changePage(int index) {
@@ -20,29 +24,35 @@ class _HomeState extends State<Home> {
     });
   }
 
-  List items = [
-    ["Make ToDO App", true],
-    ["Take Rest", false],
-    ["Class at 2", false],
-    ["xyz", true],
-  ];
+  @override
+  void initState() {
+    if (myBox.get("ITEMS") == null) {
+      db.createInitialData();
+    } else {
+      db.loadData();
+    }
+    super.initState();
+  }
 
   void changedChecked(int index, bool? value) {
     setState(() {
-      items[index][1] = !items[index][1];
+      db.items[index][1] = !db.items[index][1];
     });
+    db.updateDatabase();
   }
 
   void taskDelete(int index) {
     setState(() {
-      items.removeAt(index);
+      db.items.removeAt(index);
+      db.updateDatabase();
     });
   }
 
   void savedTask() {
     setState(() {
-      items.add([myController.text, false]);
+      db.items.add([myController.text, false]);
       myController.clear();
+      db.updateDatabase();
     });
     Navigator.of(context).pop();
   }
@@ -60,7 +70,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    List completedItems = items.where((item) => item[1]).toList();
+    List completedItems = db.items.where((item) => item[1]).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -79,33 +89,34 @@ class _HomeState extends State<Home> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Colors.white,
+          selectedItemColor: Colors.grey[400],
           unselectedItemColor: Colors.white,
           onTap: changePage,
+          currentIndex: selectedIndex,
           backgroundColor: Colors.pinkAccent,
-          items: const [
+          items: [
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
-                color: Colors.white,
+                color: selectedIndex == 0 ? Colors.grey[400] : Colors.white,
               ),
               label: "Home",
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.done,
-                color: Colors.white,
+                color: selectedIndex == 1 ? Colors.grey[400] : Colors.white,
               ),
               label: "Completed",
             ),
           ]),
       body: selectedIndex == 0
           ? ListView.builder(
-              itemCount: items.length,
+              itemCount: db.items.length,
               itemBuilder: (context, index) {
                 return ItemTile(
-                  task: items[index][0],
-                  completed: items[index][1],
+                  task: db.items[index][0],
+                  completed: db.items[index][1],
                   onChanged: (value) => changedChecked(index, value),
                   taskDeleted: (value) => taskDelete(index),
                 );
@@ -118,9 +129,9 @@ class _HomeState extends State<Home> {
                   task: completedItems[index][0],
                   completed: completedItems[index][1],
                   onChanged: (value) => changedChecked(
-                      items.indexOf(completedItems[index]), value),
+                      db.items.indexOf(completedItems[index]), value),
                   taskDeleted: (value) =>
-                      taskDelete(items.indexOf(completedItems[index])),
+                      taskDelete(db.items.indexOf(completedItems[index])),
                 );
               },
             ),
