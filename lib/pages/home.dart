@@ -1,8 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:todo_app/pages/database.dart';
 import 'package:todo_app/pages/dialog_box.dart';
 import 'package:todo_app/pages/itemtile.dart';
 
@@ -14,8 +12,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final myBox = Hive.box("myBox");
-  ToDoDatabase db = ToDoDatabase();
+  List items = [
+    ["Make ToDO App", true],
+    ["Take Rest", false],
+    ["Class at 2", false],
+    ["xyz", true]
+  ];
+
   final myController = TextEditingController();
   int selectedIndex = 0;
   void changePage(int index) {
@@ -24,35 +27,22 @@ class _HomeState extends State<Home> {
     });
   }
 
-  @override
-  void initState() {
-    if (myBox.get("ITEMS") == null) {
-      db.createInitialData();
-    } else {
-      db.loadData();
-    }
-    super.initState();
-  }
-
   void changedChecked(int index, bool? value) {
     setState(() {
-      db.items[index][1] = !db.items[index][1];
+      items[index][1] = !items[index][1];
     });
-    db.updateDatabase();
   }
 
   void taskDelete(int index) {
     setState(() {
-      db.items.removeAt(index);
-      db.updateDatabase();
+      items.removeAt(index);
     });
   }
 
   void savedTask() {
     setState(() {
-      db.items.add([myController.text, false]);
+      items.add([myController.text, false]);
       myController.clear();
-      db.updateDatabase();
     });
     Navigator.of(context).pop();
   }
@@ -70,7 +60,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    List completedItems = db.items.where((item) => item[1]).toList();
+    List completedItems = items.where((item) => item[1]).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -112,11 +102,11 @@ class _HomeState extends State<Home> {
           ]),
       body: selectedIndex == 0
           ? ListView.builder(
-              itemCount: db.items.length,
+              itemCount: items.length,
               itemBuilder: (context, index) {
                 return ItemTile(
-                  task: db.items[index][0],
-                  completed: db.items[index][1],
+                  task: items[index][0],
+                  completed: items[index][1],
                   onChanged: (value) => changedChecked(index, value),
                   taskDeleted: (value) => taskDelete(index),
                 );
@@ -129,9 +119,9 @@ class _HomeState extends State<Home> {
                   task: completedItems[index][0],
                   completed: completedItems[index][1],
                   onChanged: (value) => changedChecked(
-                      db.items.indexOf(completedItems[index]), value),
+                      items.indexOf(completedItems[index]), value),
                   taskDeleted: (value) =>
-                      taskDelete(db.items.indexOf(completedItems[index])),
+                      taskDelete(items.indexOf(completedItems[index])),
                 );
               },
             ),
